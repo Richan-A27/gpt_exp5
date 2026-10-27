@@ -1,0 +1,31 @@
+EMPLOYMENT AGREEMENT
+
+This Employment Agreement is entered into on 01-07-2026 by and between:
+1. ABC Technologies Pvt. Ltd., having its registered office at Tech Park, Bangalore (hereinafter referred to as the "Company"), and
+2. John Smith, residing at 42 Maple Street (hereinafter referred to as the "Employee").
+
+WHEREAS, the Company desires to employ the Employee, and the Employee desires to accept employment under the following terms and conditions:
+
+1. PURPOSE & POSITION:
+To outline the terms and conditions of employment for John Smith as a Senior Software Engineer.
+
+2. DURATION & TERM:
+The term of this agreement shall be for 12 months starting from 01-07-2026, subject to renewal upon mutual consent.
+
+3. COMPENSATION & PAYMENT TERMS:
+The Company shall pay the Employee a monthly salary of ₹50,000, payable on the last business day of each calendar month via direct deposit.
+
+4. EMPLOYEE OBLIGATIONS:
+The Employee agrees to perform assigned duties and follow company policies diligently. The Employee shall maintain confidentiality regarding company information and proprietary software source code.
+
+5. INTELLECTUAL PROPERTY & RIGHTS:
+Any intellectual property created during employment belongs to the company. The Employee assigns all rights, title, and interest in work product to ABC Technologies Pvt. Ltd.
+
+6. TERMINATION CONDITIONS:
+Either party may terminate by providing 30 days written notice, or payment of salary in lieu thereof. In case of gross misconduct, the Company reserves the right of immediate termination.
+
+7. CONFIDENTIALITY:
+The Employee shall maintain strict confidentiality regarding all company trade secrets, customer records, and proprietary technologies during and after the period of employment.
+
+8. GOVERNING LAW:
+This agreement shall be governed by and construed in accordance with the laws of India.

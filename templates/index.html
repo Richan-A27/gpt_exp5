@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automated Legal Document Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dark-mode">
+  <div class="app-layout">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon">⚖️</span>
+        <div>
+          <h1 class="brand-title">Automated Legal Document Analyzer</h1>
+          <p class="brand-subtitle">Zero-Cloud Local LLM Inference Engine | Ollama Llama 3.2</p>
+        </div>
+      </div>
+      <div class="header-tools">
+        <button class="btn btn-secondary" onclick="loadSample()">📄 Load Sample Agreement</button>
+        <button class="btn btn-secondary" onclick="clearInput()">🧹 Clear</button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- INPUT SECTION -->
+      <section class="card input-section">
+        <div class="section-header">
+          <span class="icon">📜</span>
+          <h2 class="section-title">Document Input</h2>
+        </div>
+
+        <div class="form-group">
+          <label for="doc-text">Enter Contract / Legal Text or Paste Agreement Below:</label>
+          <textarea id="doc-text" class="form-control text-editor" rows="7" placeholder="Paste full legal contract text here..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="doc-type">Document Type</label>
+            <select id="doc-type" class="form-control select-field">
+              <option value="Auto-detect" selected>Auto-detect from text</option>
+              <option value="Employment Agreement">Employment Agreement</option>
+              <option value="Non-Disclosure Agreement (NDA)">Non-Disclosure Agreement (NDA)</option>
+              <option value="Service Agreement">Service Agreement</option>
+            </select>
+          </div>
+
+          <div class="form-group col">
+            <label for="analysis-type">Analysis Type</label>
+            <select id="analysis-type" class="form-control select-field">
+              <option value="Complete" selected>Complete (14-Card Analysis)</option>
+              <option value="Summary">Executive Summary Only</option>
+              <option value="Obligations">Obligations & Rights</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="btn-analyze" class="btn btn-primary btn-cta" onclick="analyzeDocument()">
+          <span>⚡ Analyze Legal Document</span>
+        </button>
+      </section>
+
+      <!-- RESULTS DASHBOARD -->
+      <section id="results-dashboard" class="results-dashboard" style="display: none;">
+        <div class="dashboard-header">
+          <div>
+            <h2 class="dash-title">Structured Legal Analysis</h2>
+            <p id="engine-tag" class="dash-subtitle">Extracted strictly using local Llama 3.2 model inference</p>
+          </div>
+          <div class="dash-actions">
+            <button class="btn btn-sm btn-subtle" onclick="toggleRawJson()">&lt;/&gt; View Raw JSON</button>
+            <button class="btn btn-sm btn-subtle" onclick="copyJson()">📋 Copy JSON</button>
+            <button class="btn btn-sm btn-subtle" onclick="window.print()">🖨️ Print Report</button>
+          </div>
+        </div>
+
+        <!-- RAW JSON CONTAINER (TOGGLED) -->
+        <div id="raw-json-box" class="raw-json-container" style="display: none;">
+          <pre id="raw-json-content"></pre>
+        </div>
+
+        <!-- 1. EXECUTIVE SUMMARY CARD -->
+        <div class="card exec-summary-card">
+          <div class="card-badge">EXECUTIVE DOCUMENT SUMMARY</div>
+          <p id="summary-text" class="summary-p">
+            An employment agreement outlining the terms and conditions for John Smith's employment with ABC Technologies Pvt. Ltd.
+          </p>
+        </div>
+
+        <!-- 2. STRUCTURED CARDS GRID -->
+        <div class="cards-grid">
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">📁</span>
+              <span class="card-label">DOCUMENT TYPE</span>
+            </div>
+            <div id="val-doc-type" class="card-value highlight-blue">Employment Agreement</div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">👥</span>
+              <span class="card-label">PARTIES INVOLVED</span>
+            </div>
+            <ul id="val-parties" class="card-list">
+              <li>ABC Technologies Pvt. Ltd.</li>
+              <li>John Smith</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">🎯</span>
+              <span class="card-label">PURPOSE</span>
+            </div>
+            <div id="val-purpose" class="card-value">To outline the terms and conditions of employment for John Smith</div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">📝</span>
+              <span class="card-label">OBLIGATIONS</span>
+            </div>
+            <ul id="val-obligations" class="card-list">
+              <li>Maintain confidentiality regarding company information</li>
+              <li>Perform assigned duties and follow company policies</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">🛡️</span>
+              <span class="card-label">RIGHTS</span>
+            </div>
+            <div id="val-rights" class="card-value">Any intellectual property created during employment belongs to the company</div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">💳</span>
+              <span class="card-label">PAYMENT TERMS</span>
+            </div>
+            <div id="val-payment" class="card-value highlight-green">Monthly salary of ₹50,000</div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">⏱️</span>
+              <span class="card-label">DURATION / TERM</span>
+            </div>
+            <div id="val-duration" class="card-value">12 months starting from 01-07-2026</div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">🚪</span>
+              <span class="card-label">TERMINATION CONDITIONS</span>
+            </div>
+            <div id="val-termination" class="card-value">Either party may terminate by providing 30 days written notice</div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">🔒</span>
+              <span class="card-label">CONFIDENTIALITY</span>
+            </div>
+            <div id="val-confidentiality" class="card-value">Maintain confidentiality regarding company information</div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">📅</span>
+              <span class="card-label">IMPORTANT DATES</span>
+            </div>
+            <div id="val-dates" class="card-value highlight-date">01-07-2026</div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">🏛️</span>
+              <span class="card-label">GOVERNING LAW</span>
+            </div>
+            <div id="val-governing" class="card-value">Subject to laws of local jurisdiction</div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="card-icon">⚖️</span>
+              <span class="card-label">COMPLIANCE & RISK</span>
+            </div>
+            <div id="val-compliance" class="card-value">Standard low-risk commercial covenant; IP assignment and non-compete clauses validated.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>Automated Legal Document Analyzer | Ex. No: 5 | URK23CS1086</p>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
